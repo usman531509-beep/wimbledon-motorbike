@@ -725,6 +725,8 @@ export default function Storefront({
             });
             return counts;
           }, [])}
+          cartCount={totalItems}
+          wishlistCount={wishlist.length}
         />
       </Drawer>
 

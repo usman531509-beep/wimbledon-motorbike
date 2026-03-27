@@ -458,6 +458,8 @@ export function MobileMenuFilters({
   mobileOffersOpen,
   setMobileOffersOpen,
   productsCountByBrand = {},
+  cartCount = 0,
+  wishlistCount = 0,
 }: {
   onClose: () => void;
   onOpenWishlist: () => void;
@@ -481,6 +483,8 @@ export function MobileMenuFilters({
   mobileOffersOpen: boolean;
   setMobileOffersOpen: (v: boolean) => void;
   productsCountByBrand?: Record<string, number>;
+  cartCount?: number;
+  wishlistCount?: number;
 }) {
   const [mobileShopOpenNew, setMobileShopOpenNew] = useState(true);
   const [mobileShopCatsOpen, setMobileShopCatsOpen] = useState(false);
@@ -503,17 +507,27 @@ export function MobileMenuFilters({
             </Link>
             <button
               onClick={() => { onClose(); onOpenWishlist(); }}
-              className="group flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
+              className="group relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
             >
               <HeartIcon size={20} className="text-slate-600 group-hover:text-[#dc2626] transition-colors" />
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-800">Wishlist</span>
+              {wishlistCount && wishlistCount > 0 ? (
+                <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  {wishlistCount}
+                </span>
+              ) : null}
             </button>
             <button
               onClick={() => { onClose(); onOpenCart(); }}
-              className="group flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
+              className="group relative flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
             >
               <CartIcon size={20} className="text-slate-600 group-hover:text-[#dc2626] transition-colors" />
               <span className="text-[11px] font-bold uppercase tracking-wider text-slate-800">Cart</span>
+              {cartCount && cartCount > 0 ? (
+                <span className="absolute right-3 top-3 flex h-5 w-5 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold text-white shadow-sm ring-2 ring-white">
+                  {cartCount}
+                </span>
+              ) : null}
             </button>
           </div>
         </div>

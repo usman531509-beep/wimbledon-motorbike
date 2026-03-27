@@ -401,7 +401,6 @@ export default function ProductDetail({ product }: { product: Product }) {
 
       <Footer />
 
-      {/* ── Mobile Menu & Filter Drawer ── */}
       <Drawer open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} title="Menu & Filters">
         <MobileMenuFilters
           onClose={() => setMobileMenuOpen(false)}
@@ -426,6 +425,8 @@ export default function ProductDetail({ product }: { product: Product }) {
           mobileOffersOpen={mobileOffersOpen}
           setMobileOffersOpen={setMobileOffersOpen}
           productsCountByBrand={productsCountByBrand}
+          cartCount={totalItems}
+          wishlistCount={wishlist.length}
         />
       </Drawer>
 

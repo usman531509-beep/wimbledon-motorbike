@@ -327,6 +327,8 @@ export default function FinderResultsPage({
           mobileOffersOpen={mobileOffersOpen}
           setMobileOffersOpen={setMobileOffersOpen}
           productsCountByBrand={productsCountByBrand}
+          cartCount={totalItems}
+          wishlistCount={wishlist.length}
         />
       </Drawer>
 

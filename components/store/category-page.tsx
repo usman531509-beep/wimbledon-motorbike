@@ -269,7 +269,6 @@ export default function CategoryPage({
 
       <Footer />
 
-      {/* ── Mobile Menu & Filter Drawer ── */}
       <Drawer open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} title="Menu & Filters">
         <MobileMenuFilters
           onClose={() => setMobileMenuOpen(false)}
@@ -294,6 +293,8 @@ export default function CategoryPage({
           mobileOffersOpen={mobileOffersOpen}
           setMobileOffersOpen={setMobileOffersOpen}
           productsCountByBrand={productsCountByBrand}
+          cartCount={totalItems}
+          wishlistCount={wishlist.length}
         />
       </Drawer>
 
