@@ -482,168 +482,248 @@ export function MobileMenuFilters({
   setMobileOffersOpen: (v: boolean) => void;
   productsCountByBrand?: Record<string, number>;
 }) {
+  const [mobileShopOpenNew, setMobileShopOpenNew] = useState(true);
+  const [mobileShopCatsOpen, setMobileShopCatsOpen] = useState(false);
+  const [mobileShopBrandsOpen, setMobileShopBrandsOpen] = useState(false);
+  const [mobileOffersOpenNew, setMobileOffersOpenNew] = useState(false);
+
   return (
     <div className="flex h-full flex-col bg-white">
       <div className="flex-1 overflow-y-auto">
+        {/* Top Buttons Section */}
         <div className="space-y-6 p-6 pb-2">
           <div className="grid grid-cols-3 gap-3">
             <Link
               href="/account"
               onClick={onClose}
-              className="rounded-2xl bg-slate-100 px-4 py-3 text-center text-sm font-semibold transition hover:bg-slate-200"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
             >
-              Account
+              <UserIcon size={20} className="text-slate-600 group-hover:text-[#dc2626] transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-800">Account</span>
             </Link>
             <button
               onClick={() => { onClose(); onOpenWishlist(); }}
-              className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold transition hover:bg-slate-200"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
             >
-              Wishlist
+              <HeartIcon size={20} className="text-slate-600 group-hover:text-[#dc2626] transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-800">Wishlist</span>
             </button>
             <button
               onClick={() => { onClose(); onOpenCart(); }}
-              className="rounded-2xl bg-slate-100 px-4 py-3 text-sm font-semibold transition hover:bg-slate-200"
+              className="group flex flex-col items-center justify-center gap-2 rounded-2xl bg-slate-100 px-2 py-4 text-center transition hover:bg-slate-200"
             >
-              Cart
+              <CartIcon size={20} className="text-slate-600 group-hover:text-[#dc2626] transition-colors" />
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-800">Cart</span>
             </button>
           </div>
         </div>
 
         <div className="mt-4 border-t border-slate-100">
-          <div className="p-6 space-y-8">
-            {/* Product Categories */}
-            <div>
-              <CollapsibleSection
-                title="Product Categories"
-                isOpen={mobileCategoriesOpen}
-                onToggle={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
-              >
-                <ul className="space-y-4">
-                  <li>
-                    <label className="flex items-center gap-3 group cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={activeFilter === "all"}
-                        onChange={() => {
-                          setActiveFilter("all");
-                          setActiveSubCategory(null);
-                        }}
-                        className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
-                      />
-                      <span className={`text-[14px] transition ${activeFilter === "all" ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>All Products</span>
-                    </label>
-                  </li>
-                  {categoryHierarchy.map((cat) => (
-                    <li key={cat.id}>
-                      <div className="flex items-center justify-between group">
-                        <label className="flex items-center gap-3 cursor-pointer">
-                          <input
-                            type="checkbox"
-                            checked={activeFilter === cat.filter && !activeSubCategory}
-                            onChange={() => {
-                              setActiveFilter(cat.filter);
-                              setActiveSubCategory(null);
-                            }}
-                            className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
-                          />
-                          <span className={`text-[14px] transition ${activeFilter === cat.filter && !activeSubCategory ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>{cat.label}</span>
-                        </label>
-                        {cat.children && (
-                          <button
-                            onClick={() => setExpandedCategories((prev: any) => ({ ...prev, [cat.id]: !prev[cat.id] }))}
-                            className="text-slate-400 hover:text-[#dc2626] transition-colors p-1"
-                          >
-                            {expandedCategories[cat.id] ? "−" : "+"}
-                          </button>
-                        )}
-                      </div>
-                      {cat.children && expandedCategories[cat.id] && (
-                        <ul className="mt-3 ml-7 space-y-3">
-                          {cat.children.map((sub) => (
-                            <li key={sub.id}>
-                              <label className="flex items-center gap-3 group cursor-pointer">
-                                <input
-                                  type="checkbox"
-                                  checked={activeSubCategory === sub.label}
-                                  onChange={() => {
-                                    setActiveFilter(sub.filter);
-                                    setActiveSubCategory(sub.label);
-                                  }}
-                                  className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
-                                />
-                                <span className={`text-[14px] transition ${activeSubCategory === sub.label ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>{sub.label}</span>
-                              </label>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
-                    </li>
-                  ))}
-                </ul>
-              </CollapsibleSection>
-            </div>
-
-            {/* Bike Brands */}
-            <div>
-              <CollapsibleSection
-                title="Filter by Bike"
-                isOpen={mobileBikeBrandOpen}
-                onToggle={() => setMobileBikeBrandOpen(!mobileBikeBrandOpen)}
-              >
-                <ul className="space-y-4">
-                  {bikeBrands.map((item) => (
-                    <li key={item.label} className="flex items-center justify-between group">
-                      <label className="flex items-center gap-3 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={selectedBikeBrand === item.slug}
-                          onChange={() => setSelectedBikeBrand((prev: any) => prev === item.slug ? "all" : item.slug)}
-                          className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
-                        />
-                        <span className={`text-[14px] transition ${selectedBikeBrand === item.slug ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>{item.label}</span>
-                      </label>
-                      <span className="text-[12px] text-slate-400 font-medium">{productsCountByBrand[item.slug] || 0}</span>
-                    </li>
-                  ))}
-                </ul>
-              </CollapsibleSection>
-            </div>
-
-            {/* Additional Links */}
-            <div className="pt-4 border-t border-slate-100 space-y-4">
-              <Link href="/" onClick={onClose} className="block text-[15px] font-bold text-slate-900 hover:text-[#dc2626] transition-colors">
-                Home
-              </Link>
-              <div className="relative">
+          <div className="p-6 space-y-4">
+            {/* ── NAVIGATION SECTION ── */}
+            <div className="space-y-4">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 px-2">Navigation</p>
+              
+              {/* Shop Navigation Links */}
+              <div className="rounded-2xl bg-slate-50 border border-slate-100 overflow-hidden">
                 <button
-                  onClick={() => setMobileOffersOpen(!mobileOffersOpen)}
-                  className="flex w-full items-center justify-between py-1 text-[15px] font-bold text-slate-900 hover:text-[#dc2626] transition-colors"
+                  onClick={() => setMobileShopOpenNew(!mobileShopOpenNew)}
+                  className="flex w-full items-center justify-between px-5 py-4 text-[15px] font-bold uppercase tracking-[0.12em] text-[#dc2626] transition hover:bg-slate-100/50"
+                >
+                  Shop
+                  <ChevronDownIcon size={16} className={`transition-transform duration-300 ${mobileShopOpenNew ? "rotate-180" : ""}`} />
+                </button>
+                {mobileShopOpenNew && (
+                  <div className="border-t border-slate-100 px-5 pb-5 pt-2 space-y-2">
+                    <CollapsibleSection
+                       title="Shop By Category"
+                       isOpen={mobileShopCatsOpen}
+                       onToggle={() => setMobileShopCatsOpen(!mobileShopCatsOpen)}
+                    >
+                       <ul className="space-y-1 mt-1">
+                          {categories.map((item) => (
+                             <li key={item.filter}>
+                               <Link
+                                 href={`/category/${item.filter}`}
+                                 onClick={onClose}
+                                 className="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-[#dc2626]/5 hover:text-[#dc2626] transition-all"
+                               >
+                                 {item.title}
+                               </Link>
+                             </li>
+                          ))}
+                       </ul>
+                    </CollapsibleSection>
+
+                    <CollapsibleSection
+                       title="Shop By Brand"
+                       isOpen={mobileShopBrandsOpen}
+                       onToggle={() => setMobileShopBrandsOpen(!mobileShopBrandsOpen)}
+                    >
+                       <ul className="space-y-1 mt-1">
+                          {bikeBrands.map((item) => (
+                             <li key={item.slug}>
+                               <Link
+                                 href={`/brand/${item.slug}`}
+                                 onClick={onClose}
+                                 className="block rounded-xl px-4 py-2.5 text-sm font-medium text-slate-600 hover:bg-[#dc2626]/5 hover:text-[#dc2626] transition-all"
+                               >
+                                 {item.label}
+                               </Link>
+                             </li>
+                          ))}
+                       </ul>
+                    </CollapsibleSection>
+                  </div>
+                )}
+              </div>
+
+              {/* Offers Navigation */}
+              <div className={`rounded-2xl border transition-all duration-300 ${mobileOffersOpenNew ? "bg-rose-50 border-rose-100" : "bg-white border-slate-100"}`}>
+                <button
+                  onClick={() => setMobileOffersOpenNew(!mobileOffersOpenNew)}
+                  className={`flex w-full items-center justify-between px-5 py-4 text-[15px] font-bold uppercase tracking-[0.12em] transition ${mobileOffersOpenNew ? "text-[#dc2626]" : "text-slate-900 hover:text-[#dc2626]"}`}
                 >
                   Special Offers
-                  <ChevronDownIcon size={16} className={`transition-transform duration-300 ${mobileOffersOpen ? "rotate-180" : ""}`} />
+                  <ChevronDownIcon size={16} className={`transition-transform duration-300 ${mobileOffersOpenNew ? "rotate-180" : ""}`} />
                 </button>
-                {mobileOffersOpen && (
-                  <div className="mt-3 space-y-2 rounded-2xl bg-slate-50 p-3">
+                {mobileOffersOpenNew && (
+                  <div className="border-t border-rose-100 px-5 pb-5 pt-3 space-y-2">
                     {["Summer Sale", "Clearance"].map((item) => (
                       <Link
                         key={item}
                         href="/#campaigns"
                         onClick={() => {
                           onClose();
-                          setMobileOffersOpen(false);
+                          setMobileOffersOpenNew(false);
                         }}
-                        className="block rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:text-[#dc2626] transition-colors shadow-sm"
+                        className="flex items-center justify-between rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-700 hover:text-[#dc2626] transition-all shadow-sm border border-rose-50 group"
                       >
                         {item}
+                        <ArrowRightIcon size={14} className="opacity-0 -translate-x-2 transition-all group-hover:opacity-100 group-hover:translate-x-0" />
                       </Link>
                     ))}
                   </div>
                 )}
               </div>
+
+              <Link
+                href="/"
+                onClick={onClose}
+                className="flex items-center justify-between w-full px-5 py-4 rounded-2xl border border-slate-100 text-[15px] font-bold uppercase tracking-[0.12em] text-slate-900 hover:text-[#dc2626] hover:bg-slate-50 transition-all"
+              >
+                Home
+                <ArrowRightIcon size={16} className="text-slate-300" />
+              </Link>
+            </div>
+
+            {/* ── FILTERS SECTION ── */}
+            <div className="pt-6 border-t border-slate-100 space-y-4">
+              <p className="text-[11px] font-bold uppercase tracking-widest text-slate-400 px-2">Filters</p>
+              
+              {/* Product Categories Filter (Checkboxes) */}
+              <div className="rounded-2xl border border-slate-100 bg-white p-2">
+                <CollapsibleSection
+                  title="Product Categories"
+                  isOpen={mobileCategoriesOpen}
+                  onToggle={() => setMobileCategoriesOpen(!mobileCategoriesOpen)}
+                >
+                  <ul className="space-y-4 p-3 pt-0">
+                    <li>
+                      <label className="flex items-center gap-3 group cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={activeFilter === "all"}
+                          onChange={() => {
+                            setActiveFilter("all");
+                            setActiveSubCategory(null);
+                          }}
+                          className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
+                        />
+                        <span className={`text-[14px] transition ${activeFilter === "all" ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>All Products</span>
+                      </label>
+                    </li>
+                    {categoryHierarchy.map((cat) => (
+                      <li key={cat.id}>
+                        <div className="flex items-center justify-between group">
+                          <label className="flex items-center gap-3 cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={activeFilter === cat.filter && !activeSubCategory}
+                              onChange={() => {
+                                setActiveFilter(cat.filter);
+                                setActiveSubCategory(null);
+                              }}
+                              className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
+                            />
+                            <span className={`text-[14px] transition ${activeFilter === cat.filter && !activeSubCategory ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>{cat.label}</span>
+                          </label>
+                          {cat.children && (
+                            <button
+                              onClick={() => setExpandedCategories((prev: any) => ({ ...prev, [cat.id]: !prev[cat.id] }))}
+                              className="text-slate-400 hover:text-[#dc2626] transition-colors p-1"
+                            >
+                              {expandedCategories[cat.id] ? "−" : "+"}
+                            </button>
+                          )}
+                        </div>
+                        {cat.children && expandedCategories[cat.id] && (
+                          <ul className="mt-3 ml-7 space-y-3 border-l border-slate-100 pl-4">
+                            {cat.children.map((sub) => (
+                              <li key={sub.id}>
+                                <label className="flex items-center gap-3 group cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={activeSubCategory === sub.label}
+                                    onChange={() => {
+                                      setActiveFilter(sub.filter || sub.label.toLowerCase());
+                                      setActiveSubCategory(sub.label);
+                                    }}
+                                    className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
+                                  />
+                                  <span className={`text-[14px] transition ${activeSubCategory === sub.label ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>{sub.label}</span>
+                                </label>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </CollapsibleSection>
+              </div>
+
+              {/* Bike Brands Filter (Checkboxes) */}
+              <div className="rounded-2xl border border-slate-100 bg-white p-2">
+                <CollapsibleSection
+                  title="Filter by Bike"
+                  isOpen={mobileBikeBrandOpen}
+                  onToggle={() => setMobileBikeBrandOpen(!mobileBikeBrandOpen)}
+                >
+                  <ul className="space-y-4 p-3 pt-0">
+                    {bikeBrands.map((item) => (
+                      <li key={item.label} className="flex items-center justify-between group">
+                        <label className="flex items-center gap-3 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={selectedBikeBrand === item.slug}
+                            onChange={() => setSelectedBikeBrand((prev: any) => prev === item.slug ? "all" : item.slug)}
+                            className="h-4 w-4 rounded border-slate-300 text-[#dc2626] focus:ring-[#dc2626]"
+                          />
+                          <span className={`text-[14px] transition ${selectedBikeBrand === item.slug ? "font-bold text-slate-900" : "text-slate-600 group-hover:text-slate-900"}`}>{item.label}</span>
+                        </label>
+                        <span className="text-[12px] text-slate-400 font-medium">{productsCountByBrand[item.slug] || 0}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CollapsibleSection>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
+
 
       <div className="border-t border-slate-100 bg-white p-6 pb-8">
         <div className="flex flex-col gap-3">
