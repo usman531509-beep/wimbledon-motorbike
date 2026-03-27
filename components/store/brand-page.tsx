@@ -177,17 +177,9 @@ export default function BrandPage({
               </Link>
             </div>
 
-            <div className="mb-8 grid gap-3 rounded-[28px] bg-white p-4 shadow-sm md:grid-cols-3">
-              <label className="flex items-center gap-3 rounded-full border border-slate-200 bg-slate-50 px-4 py-3">
-                <SearchIcon size={16} className="text-slate-400" />
-                <input
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search by name, OEM or part number"
-                  className="w-full bg-transparent text-sm outline-none"
-                />
-              </label>
+            <div className="mb-8 grid gap-3 rounded-[28px] bg-white p-4 shadow-sm md:grid-cols-2">
               <label className="relative">
+
                 <select
                   value={selectedCategory}
                   onChange={(event) =>
